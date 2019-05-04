@@ -48,8 +48,7 @@ class Things extends StatelessWidget {
 
     return Query(
       options: QueryOptions(
-        document: getThings,
-        pollInterval: 10,
+        document: getThings
       ),
       builder: (QueryResult result, { VoidCallback refetch }) {
 
