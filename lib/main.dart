@@ -1,14 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:graphql_flutter/graphql_flutter.dart';
+import 'package:hype_app/screens/home/index.dart';
 
 void main() => runApp(MyApp());
-
 class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final httpLink = HttpLink(
       uri: 'http://localhost:8000/graphql/',
-    );
+    ) as Link;
 
     final client = ValueNotifier(
       GraphQLClient(
@@ -25,48 +25,9 @@ class MyApp extends StatelessWidget {
           theme: ThemeData(
             primarySwatch: Colors.red,
           ),
-          home: Scaffold(
-            appBar: AppBar(title: Text("Things")),
-            body: Things(),
-          ),
+          home: Home()
         )
       )
-    );
-  }
-}
-
-class Things extends StatelessWidget {
-  @override
-  Widget build(BuildContext context) {
-    final getThings = """
-      query getThings {
-        things {
-          text
-        }
-      }
-    """;
-
-    return Query(
-      options: QueryOptions(
-        document: getThings
-      ),
-      builder: (QueryResult result, { VoidCallback refetch }) {
-
-        if (result.loading) {
-          return Text('Carregando');
-        }
-        print(result.data);
-        final things = result.data['things'];
-
-        return ListView.builder(
-          padding: const EdgeInsets.all(16.0),
-          itemCount: things.length,
-          itemBuilder: (context, i) {
-            final thing = things[i];
-            return Text(thing['text']);
-          },
-        );
-      }
     );
   }
 }
